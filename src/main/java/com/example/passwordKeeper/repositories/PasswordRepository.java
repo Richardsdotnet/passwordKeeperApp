@@ -5,4 +5,5 @@ import org.hibernate.dialect.MySQLStorageEngine;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PasswordRepository extends JpaRepository<ManagePasswords, Long> {
+
 }
