@@ -1,10 +1,17 @@
 package com.example.passwordKeeper.serviceTest;
 
+import com.example.passwordKeeper.dto.request.LoginRequest;
+import com.example.passwordKeeper.dto.request.RegistrationRequest;
+import com.example.passwordKeeper.dto.response.LoginResponse;
+import com.example.passwordKeeper.dto.response.RegistrationResponse;
 import com.example.passwordKeeper.services.UserServices;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -12,16 +19,41 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserServicesTest {
 
+    @Autowired
+    private  UserServices userServices;
 
-    @BeforeAll
-    static void beforeAll() {
+
+    private RegistrationRequest registrationRequest;
+    private RegistrationRequest registrationRequest1;
+    private RegistrationResponse registrationResponse;
+    private RegistrationResponse registrationResponse1;
+
+    private LoginRequest loginRequest;
+    private LoginRequest loginRequest1;
+    private LoginResponse loginResponse;
+    private LoginResponse loginResponse1;
+
+
+    @BeforeEach
+     void beforeEach() {
+        registrationRequest = new RegistrationRequest();
+        registrationRequest1 = new RegistrationRequest();
+
+        registrationResponse = new RegistrationResponse();
+        registrationResponse1 = new RegistrationResponse();
+
+        loginRequest = new LoginRequest();
+        loginRequest1 = new LoginRequest();
+
+        loginResponse = new LoginResponse();
+        loginResponse1 = new LoginResponse();
 
     }
 
-    private final UserServices userServices;
+
 @Test
     void testThatUserCanRegister(){
-    userServices.register();
+    userServices.register(registrationRequest);
 }
 
 }

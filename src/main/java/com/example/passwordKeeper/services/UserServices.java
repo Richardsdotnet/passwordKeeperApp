@@ -7,7 +7,9 @@ import com.example.passwordKeeper.dto.response.LoginResponse;
 import com.example.passwordKeeper.dto.response.RegistrationResponse;
 import com.example.passwordKeeper.dto.response.SavePasswordResponse;
 import com.example.passwordKeeper.dto.response.UpdatePasswordResponse;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface UserServices {
 //    RegistrationResponse register(RegistrationRequest registrationRequest);
 //    LoginResponse login(LoginRequest loginRequest);
