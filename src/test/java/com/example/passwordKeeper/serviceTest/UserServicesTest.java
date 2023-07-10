@@ -64,6 +64,13 @@ class UserServicesTest {
     registrationResponse = userServices.register(registrationRequest);
     assertEquals("Registration successful", registrationResponse.getMessage());
     assertEquals(1, userServices.countAllUsers());
+}
+
+@Test
+    void testThatUserCanLogin(){
+        loginResponse = userServices.login(loginRequest);
+        assertEquals("Login successful", loginResponse.getMessage());
+        assertTrue(true, loginResponse.getMessage());
 
 }
 

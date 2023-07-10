@@ -19,6 +19,11 @@ public interface UserServices {
     RegistrationResponse register(RegistrationRequest registrationRequest);
 
     Long countAllUsers();
+
+    LoginResponse login(LoginRequest loginRequest);
+
+
+
 //    RegistrationResponse register(RegistrationRequest registrationRequest);
 //    LoginResponse login(LoginRequest loginRequest);
 //    SavePasswordResponse savePassword(SavePasswordRequest savePasswordRequest);

@@ -7,5 +7,4 @@ import java.util.Collection;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-     Long countAllUsers();
 }
