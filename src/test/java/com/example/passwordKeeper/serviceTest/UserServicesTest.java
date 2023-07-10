@@ -41,7 +41,7 @@ class UserServicesTest {
         registrationRequest = new RegistrationRequest();
         registrationRequest = RegistrationRequest.builder()
                 .accessCode("asdf")
-                .email("rich@gmail.com")
+                .email("richFe@gmail.com")
                 .name("John Doe")
                 .phoneNumber("08081493711")
                 .build();

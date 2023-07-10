@@ -4,6 +4,7 @@ import com.example.passwordKeeper.dto.request.LoginRequest;
 import com.example.passwordKeeper.dto.request.RegistrationRequest;
 import com.example.passwordKeeper.dto.response.LoginResponse;
 import com.example.passwordKeeper.dto.response.RegistrationResponse;
+import com.example.passwordKeeper.exceptions.RegistrationException;
 import com.example.passwordKeeper.models.User;
 import com.example.passwordKeeper.repositories.UserRepository;
 import com.example.passwordKeeper.services.UserServices;
@@ -18,51 +19,53 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+
 public class UserServiceImpl implements UserServices {
     @NonNull
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public RegistrationResponse register(RegistrationRequest registrationRequest) {
+    public RegistrationResponse register(RegistrationRequest registrationRequest) throws RegistrationException {
         RegistrationResponse registrationResponse = new RegistrationResponse();
-        User user = new User();
-        modelMapper.map(user, registrationRequest);
+       User user = userRepository.findByEmail(registrationRequest.getEmail());
+       if(user != null) throw new RegistrationException("Can't register existing User");user = mapRequestToUser(registrationRequest);
         userRepository.save(user);
         registrationResponse.setMessage("Registration successful");
         return registrationResponse;
-
     }
 
     @Override
     public Long countAllUsers() {
         return userRepository.count();
     }
+    public static User mapRequestToUser(RegistrationRequest registrationRequest){
+        User user = new User();
+        user.setName(registrationRequest.getName());
+        user.setEmail(registrationRequest.getEmail());
+        user.setPhoneNumber(registrationRequest.getPhoneNumber());
+        user.setAccessCode(registrationRequest.getAccessCode());
+
+        return user;
+    }
 
     @Override
-    public LoginResponse login(LoginRequest loginRequest) {
-        LoginResponse loginResponse = new LoginResponse();
-        User user = new User();
-        modelMapper.map(user, loginRequest);
-        boolean isFoundUser = false;
-        //throw exception here
-        for (User user1 : userRepository.findAll()) {
-            if (user.getEmail().equals(user1.getEmail()) && user.getAccessCode().equals(user1.getAccessCode())) {
-                modelMapper.map(user, loginRequest);
-                loginResponse.setMessage("Login successful");
-                loginResponse.setLoggedIn(true);
-
-            }
-        }
-
-        if(!isFoundUser){
-            loginResponse.setMessage("User not found");
-            loginResponse.setLoggedIn(false);
-        }
-
+    public LoginResponse login(LoginRequest loginRequest)  {
+            boolean isFoundUser = false;
+            LoginResponse loginResponse = new LoginResponse();
+       User foundUser = userRepository.findByEmail(loginRequest.getEmail());
+       if(foundUser != null){
+           modelMapper.map(foundUser, loginRequest);
+           loginResponse.setMessage("Login successful");
+           loginResponse.setLoggedIn(true);
+           return loginResponse;
+       } if(!isFoundUser) {
+               loginResponse.setMessage("User not found");
+               loginResponse.setLoggedIn(false);
+       }
         return loginResponse;
-    }
+        }
 
 
 }

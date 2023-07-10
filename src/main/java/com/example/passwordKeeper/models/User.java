@@ -1,19 +1,23 @@
 package com.example.passwordKeeper.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
+@Entity
 
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String name;
     private String phoneNumber;
-    private String id;
     private String email;
     private String accessCode;
 }
