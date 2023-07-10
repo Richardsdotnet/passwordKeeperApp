@@ -4,6 +4,7 @@ import com.example.passwordKeeper.dto.request.LoginRequest;
 import com.example.passwordKeeper.dto.request.RegistrationRequest;
 import com.example.passwordKeeper.dto.response.LoginResponse;
 import com.example.passwordKeeper.dto.response.RegistrationResponse;
+import com.example.passwordKeeper.repositories.UserRepository;
 import com.example.passwordKeeper.services.UserServices;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
-@AllArgsConstructor
+
+
 
 class UserServicesTest {
 
@@ -37,6 +39,12 @@ class UserServicesTest {
     @BeforeEach
      void beforeEach() {
         registrationRequest = new RegistrationRequest();
+        registrationRequest = RegistrationRequest.builder()
+                .accessCode("asdf")
+                .email("rich@gmail.com")
+                .name("John Doe")
+                .phoneNumber("08081493711")
+                .build();
         registrationRequest1 = new RegistrationRequest();
 
         registrationResponse = new RegistrationResponse();
@@ -53,7 +61,10 @@ class UserServicesTest {
 
 @Test
     void testThatUserCanRegister(){
-    userServices.register(registrationRequest);
+    registrationResponse = userServices.register(registrationRequest);
+    assertEquals("Registration successful", registrationResponse.getMessage());
+    assertEquals(1, userServices.countAllUsers());
+
 }
 
 }
