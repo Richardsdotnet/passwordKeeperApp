@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserServices {
     public LoginResponse login(LoginRequest loginRequest)  {
             boolean isFoundUser = false;
             LoginResponse loginResponse = new LoginResponse();
-       User foundUser = userRepository.findByEmail(loginRequest.getEmail());
+        User foundUser = userRepository.findByEmail(loginRequest.getEmail());
        if(foundUser != null){
            modelMapper.map(foundUser, loginRequest);
            loginResponse.setMessage("Login successful");

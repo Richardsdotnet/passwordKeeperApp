@@ -2,8 +2,10 @@ package com.example.passwordKeeper.serviceTest;
 
 import com.example.passwordKeeper.dto.request.LoginRequest;
 import com.example.passwordKeeper.dto.request.RegistrationRequest;
+import com.example.passwordKeeper.dto.request.SavePasswordRequest;
 import com.example.passwordKeeper.dto.response.LoginResponse;
 import com.example.passwordKeeper.dto.response.RegistrationResponse;
+import com.example.passwordKeeper.dto.response.SavePasswordResponse;
 import com.example.passwordKeeper.exceptions.LoginException;
 import com.example.passwordKeeper.exceptions.RegistrationException;
 import com.example.passwordKeeper.models.User;
@@ -29,6 +31,8 @@ class UserServicesTest {
     private RegistrationRequest registrationRequest1;
     private RegistrationResponse registrationResponse;
     private RegistrationResponse registrationResponse1;
+    private SavePasswordRequest savePasswordRequest;
+    private SavePasswordResponse savePasswordResponse;
 
     private LoginRequest loginRequest;
     private LoginRequest loginRequest1;
@@ -49,6 +53,7 @@ class UserServicesTest {
 
         registrationResponse = new RegistrationResponse();
         registrationResponse1 = new RegistrationResponse();
+
 
         loginRequest = new LoginRequest();
         loginRequest1 = new LoginRequest();
@@ -75,6 +80,21 @@ class UserServicesTest {
         loginResponse = userServices.login(loginRequest);
         assertEquals("Login successful", loginResponse.getMessage());
         assertTrue(true, loginResponse.getMessage());
+
+}
+
+@Test
+    void testThatUsersCanSavePasswords(){
+
+}
+
+@Test
+    void testThatUsersCanViewSavedPasswords(){
+
+}
+
+@Test
+    void testThatUserCanUseSavedPasswords(){
 
 }
 

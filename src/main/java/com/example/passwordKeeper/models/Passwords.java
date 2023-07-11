@@ -16,15 +16,16 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @Entity
-public class ManagePasswords {
+public class Passwords {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String accountName;
-    private String password;
-
     private LocalDateTime timeCreated;
     private LocalDateTime lastEdited;
+    private String title;
+    private String username;
+    private String passwordValue;
 
 
 
