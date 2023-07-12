@@ -8,6 +8,7 @@ import com.example.passwordKeeper.dto.response.RegistrationResponse;
 import com.example.passwordKeeper.dto.response.SavePasswordResponse;
 import com.example.passwordKeeper.exceptions.LoginException;
 import com.example.passwordKeeper.exceptions.RegistrationException;
+import com.example.passwordKeeper.models.Passwords;
 import com.example.passwordKeeper.models.User;
 import com.example.passwordKeeper.services.UserServices;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,14 +39,24 @@ class UserServicesTest {
     private LoginRequest loginRequest1;
     private LoginResponse loginResponse;
     private LoginResponse loginResponse1;
+    private Passwords password;
 
 
     @BeforeEach
      void beforeEach() {
+
+        password = new Passwords();
+
+        password.setPasswordValue("goatandrun");
+        password.setTitle("mywrongPassword");
+        password.setUserEmail("rich@gmail.com");
+
+
+
         registrationRequest = new RegistrationRequest();
         registrationRequest = RegistrationRequest.builder()
-                .accessCode("fooo")
-                .email("richie22@gmail.com")
+                .accessCode("asdf")
+                .email("rich@gmail.com")
                 .name("Mike Doehh")
                 .phoneNumber("08081493711")
                 .build();
@@ -72,6 +83,12 @@ class UserServicesTest {
     assertEquals("Registration successful", registrationResponse.getMessage());
     assertEquals(1, userServices.countAllUsers());
 }
+@Test
+void meTestThatWeCanSavePassword(){
+
+        userServices.createAndSavedPassword(password);
+
+}
 
 @Test
     void testThatUserCanLogin() throws LoginException {
@@ -89,7 +106,7 @@ class UserServicesTest {
     void testThatUsersCanSavePasswords() throws LoginException {
         loginRequest = LoginRequest.builder()
                 .accessCode("asdf")
-                .email("rich22@gmail.com")
+                .email("rich@gmail.com")
                 .build();
         loginResponse = userServices.login(loginRequest);
         assertEquals("Login successful", loginResponse.getMessage());

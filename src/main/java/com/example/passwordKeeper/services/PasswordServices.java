@@ -1,5 +1,7 @@
 package com.example.passwordKeeper.services;
 
-public interface PasswordServices {
+import com.example.passwordKeeper.models.Passwords;
 
+public interface PasswordServices {
+ void savePassword(Passwords passwords);
 }

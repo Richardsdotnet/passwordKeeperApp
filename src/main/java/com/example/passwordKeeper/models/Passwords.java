@@ -1,9 +1,6 @@
 package com.example.passwordKeeper.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,8 +20,10 @@ public class Passwords {
     private String accountName;
     private LocalDateTime timeCreated;
     private LocalDateTime lastEdited;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User passwordUser;
     private String title;
-    private String username;
+    private String userEmail;
     private String passwordValue;
 
 

@@ -10,12 +10,15 @@ import com.example.passwordKeeper.models.Passwords;
 import com.example.passwordKeeper.models.User;
 import com.example.passwordKeeper.repositories.PasswordRepository;
 import com.example.passwordKeeper.repositories.UserRepository;
+import com.example.passwordKeeper.services.PasswordServices;
 import com.example.passwordKeeper.services.UserServices;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 
 @RequiredArgsConstructor
@@ -26,7 +29,8 @@ public class UserServiceImpl implements UserServices {
     @NonNull
 
     private final UserRepository userRepository;
-    private final PasswordRepository passwordRepository;
+    @NonNull
+    private final PasswordServices passwordServices;
 
     ModelMapper modelMapper = new ModelMapper();
 
@@ -79,10 +83,21 @@ public class UserServiceImpl implements UserServices {
             SavePasswordResponse savePasswordResponse = new SavePasswordResponse();
             Passwords password = new Passwords();
             modelMapper.map(password,savePasswordRequest);
-            passwordRepository.save(password);
+
+        System.out.println("this is password ()-->  "+password.getPasswordValue());
+        System.out.println("this is password  value ()-->  "+savePasswordRequest.getPasswordValue());
+            passwordServices.savePassword(password);
             savePasswordResponse.setMessage("Password saved successfully");
             return savePasswordResponse;
         }
+
+    @Override
+    public void createAndSavedPassword(Passwords password) {
+        password.setPasswordUser(userRepository.findByEmail(password.getUserEmail()));
+        password.setTimeCreated(LocalDateTime.now());
+        passwordServices.savePassword(password);
+
+    }
 
 
 }

@@ -9,6 +9,7 @@ import com.example.passwordKeeper.dto.response.SavePasswordResponse;
 import com.example.passwordKeeper.dto.response.UpdatePasswordResponse;
 import com.example.passwordKeeper.exceptions.LoginException;
 import com.example.passwordKeeper.exceptions.RegistrationException;
+import com.example.passwordKeeper.models.Passwords;
 import com.example.passwordKeeper.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,6 +26,8 @@ public interface UserServices {
     LoginResponse login(LoginRequest loginRequest) throws LoginException;
 
     SavePasswordResponse savePassword(SavePasswordRequest savePasswordRequest);
+
+    void createAndSavedPassword(Passwords password);
 
 
 //    RegistrationResponse register(RegistrationRequest registrationRequest);

@@ -1,10 +1,10 @@
 package com.example.passwordKeeper.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,4 +20,6 @@ public class User {
     private String phoneNumber;
     private String email;
     private String accessCode;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "passwordUser", orphanRemoval = true)
+    private List<Passwords> listOfPassword = new ArrayList<>();
 }
