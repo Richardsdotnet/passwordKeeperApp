@@ -24,6 +24,7 @@ public interface UserServices {
 
     LoginResponse login(LoginRequest loginRequest) throws LoginException;
 
+    SavePasswordResponse savePassword(SavePasswordRequest savePasswordRequest);
 
 
 //    RegistrationResponse register(RegistrationRequest registrationRequest);

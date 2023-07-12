@@ -44,9 +44,9 @@ class UserServicesTest {
      void beforeEach() {
         registrationRequest = new RegistrationRequest();
         registrationRequest = RegistrationRequest.builder()
-                .accessCode("asdf")
-                .email("rich@gmail.com")
-                .name("John Doe")
+                .accessCode("fooo")
+                .email("richie22@gmail.com")
+                .name("Mike Doehh")
                 .phoneNumber("08081493711")
                 .build();
         registrationRequest1 = new RegistrationRequest();
@@ -61,6 +61,8 @@ class UserServicesTest {
         loginResponse = new LoginResponse();
         loginResponse1 = new LoginResponse();
 
+        savePasswordRequest = new SavePasswordRequest();
+        savePasswordResponse = new SavePasswordResponse();
     }
 
 
@@ -75,7 +77,7 @@ class UserServicesTest {
     void testThatUserCanLogin() throws LoginException {
         loginRequest  = LoginRequest.builder()
                 .accessCode("asdf")
-                .email("rich@gmail.com")
+                .email("rich22@gmail.com")
                 .build();
         loginResponse = userServices.login(loginRequest);
         assertEquals("Login successful", loginResponse.getMessage());
@@ -84,11 +86,26 @@ class UserServicesTest {
 }
 
 @Test
-    void testThatUsersCanSavePasswords(){
+    void testThatUsersCanSavePasswords() throws LoginException {
+        loginRequest = LoginRequest.builder()
+                .accessCode("asdf")
+                .email("rich22@gmail.com")
+                .build();
+        loginResponse = userServices.login(loginRequest);
+        assertEquals("Login successful", loginResponse.getMessage());
+
+        savePasswordRequest = SavePasswordRequest.builder()
+                .accountName("FaceBook")
+                .passwordValue("myFB123")
+                .build();
+        savePasswordResponse = userServices.savePassword(savePasswordRequest);
+        assertEquals("Password saved successfully", savePasswordResponse.getMessage());
+
 
 }
 
 @Test
+
     void testThatUsersCanViewSavedPasswords(){
 
 }

@@ -1,10 +1,14 @@
 package com.example.passwordKeeper.services.passwordKeeper;
 import com.example.passwordKeeper.dto.request.LoginRequest;
 import com.example.passwordKeeper.dto.request.RegistrationRequest;
+import com.example.passwordKeeper.dto.request.SavePasswordRequest;
 import com.example.passwordKeeper.dto.response.LoginResponse;
 import com.example.passwordKeeper.dto.response.RegistrationResponse;
+import com.example.passwordKeeper.dto.response.SavePasswordResponse;
 import com.example.passwordKeeper.exceptions.RegistrationException;
+import com.example.passwordKeeper.models.Passwords;
 import com.example.passwordKeeper.models.User;
+import com.example.passwordKeeper.repositories.PasswordRepository;
 import com.example.passwordKeeper.repositories.UserRepository;
 import com.example.passwordKeeper.services.UserServices;
 import lombok.NonNull;
@@ -15,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 
 @RequiredArgsConstructor
-
 @Service
 @Slf4j
 
@@ -23,13 +26,16 @@ public class UserServiceImpl implements UserServices {
     @NonNull
 
     private final UserRepository userRepository;
+    private final PasswordRepository passwordRepository;
+
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public RegistrationResponse register(RegistrationRequest registrationRequest) throws RegistrationException {
         RegistrationResponse registrationResponse = new RegistrationResponse();
-       User user = userRepository.findByEmail(registrationRequest.getEmail());
-       if(user != null) throw new RegistrationException("Can't register existing User");user = mapRequestToUser(registrationRequest);
+        User user = userRepository.findByEmail(registrationRequest.getEmail());
+        if (user != null) throw new RegistrationException("Can't register existing User");
+        user = mapRequestToUser(registrationRequest);
         userRepository.save(user);
         registrationResponse.setMessage("Registration successful");
         return registrationResponse;
@@ -39,7 +45,8 @@ public class UserServiceImpl implements UserServices {
     public Long countAllUsers() {
         return userRepository.count();
     }
-    public static User mapRequestToUser(RegistrationRequest registrationRequest){
+
+    public static User mapRequestToUser(RegistrationRequest registrationRequest) {
         User user = new User();
         user.setName(registrationRequest.getName());
         user.setEmail(registrationRequest.getEmail());
@@ -50,21 +57,34 @@ public class UserServiceImpl implements UserServices {
     }
 
     @Override
-    public LoginResponse login(LoginRequest loginRequest)  {
-            boolean isFoundUser = false;
-            LoginResponse loginResponse = new LoginResponse();
+    public LoginResponse login(LoginRequest loginRequest) {
+        boolean isFoundUser = false;
+        LoginResponse loginResponse = new LoginResponse();
         User foundUser = userRepository.findByEmail(loginRequest.getEmail());
-       if(foundUser != null){
-           modelMapper.map(foundUser, loginRequest);
-           loginResponse.setMessage("Login successful");
-           loginResponse.setLoggedIn(true);
-           return loginResponse;
-       } if(!isFoundUser) {
-               loginResponse.setMessage("User not found");
-               loginResponse.setLoggedIn(false);
-       }
+        if (foundUser != null) {
+            modelMapper.map(foundUser, loginRequest);
+            loginResponse.setMessage("Login successful");
+            loginResponse.setLoggedIn(true);
+            return loginResponse;
+        }
+        if (!isFoundUser) {
+            loginResponse.setMessage("User not found");
+            loginResponse.setLoggedIn(false);
+        }
         return loginResponse;
+    }
+
+    @Override
+    public SavePasswordResponse savePassword(SavePasswordRequest savePasswordRequest) {
+            SavePasswordResponse savePasswordResponse = new SavePasswordResponse();
+            Passwords password = new Passwords();
+            modelMapper.map(password,savePasswordRequest);
+            passwordRepository.save(password);
+            savePasswordResponse.setMessage("Password saved successfully");
+            return savePasswordResponse;
         }
 
 
 }
+
+
