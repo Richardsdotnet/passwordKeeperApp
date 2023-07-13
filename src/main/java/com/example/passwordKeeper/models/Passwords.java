@@ -22,9 +22,8 @@ public class Passwords {
     private LocalDateTime lastEdited;
     @ManyToOne(fetch = FetchType.LAZY)
     private User passwordUser;
-    private String title;
     private String userEmail;
-    private String passwordValue;
+    private String passwordToSave;
 
 
 

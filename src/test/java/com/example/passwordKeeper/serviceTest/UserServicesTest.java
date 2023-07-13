@@ -9,7 +9,6 @@ import com.example.passwordKeeper.dto.response.SavePasswordResponse;
 import com.example.passwordKeeper.exceptions.LoginException;
 import com.example.passwordKeeper.exceptions.RegistrationException;
 import com.example.passwordKeeper.models.Passwords;
-import com.example.passwordKeeper.models.User;
 import com.example.passwordKeeper.services.UserServices;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,11 +27,11 @@ class UserServicesTest {
     private  UserServices userServices;
 
 
-    private RegistrationRequest registrationRequest;
+ private RegistrationRequest registrationRequest;
     private RegistrationRequest registrationRequest1;
     private RegistrationResponse registrationResponse;
     private RegistrationResponse registrationResponse1;
-    private SavePasswordRequest savePasswordRequest;
+   private SavePasswordRequest savePasswordRequest;
     private SavePasswordResponse savePasswordResponse;
 
     private LoginRequest loginRequest;
@@ -47,10 +46,9 @@ class UserServicesTest {
 
         password = new Passwords();
 
-        password.setPasswordValue("goatandrun");
-        password.setTitle("mywrongPassword");
+        password.setPasswordToSave("FBpass123");
+        password.setAccountName("Facebook");
         password.setUserEmail("rich@gmail.com");
-
 
 
         registrationRequest = new RegistrationRequest();
@@ -60,20 +58,30 @@ class UserServicesTest {
                 .name("Mike Doehh")
                 .phoneNumber("08081493711")
                 .build();
+
+
+        loginRequest = new LoginRequest();
+        loginRequest1 = new LoginRequest();
+
+        loginRequest = LoginRequest.builder()
+                .accessCode("asdf")
+                .email("rich@gmail.com")
+                .build();
+
+
+        loginResponse = new LoginResponse();
+        loginResponse1 = new LoginResponse();
+
+
         registrationRequest1 = new RegistrationRequest();
 
         registrationResponse = new RegistrationResponse();
         registrationResponse1 = new RegistrationResponse();
 
 
-        loginRequest = new LoginRequest();
-        loginRequest1 = new LoginRequest();
 
-        loginResponse = new LoginResponse();
-        loginResponse1 = new LoginResponse();
 
-        savePasswordRequest = new SavePasswordRequest();
-        savePasswordResponse = new SavePasswordResponse();
+
     }
 
 
@@ -82,12 +90,6 @@ class UserServicesTest {
     registrationResponse = userServices.register(registrationRequest);
     assertEquals("Registration successful", registrationResponse.getMessage());
     assertEquals(1, userServices.countAllUsers());
-}
-@Test
-void meTestThatWeCanSavePassword(){
-
-        userServices.createAndSavedPassword(password);
-
 }
 
 @Test
@@ -104,19 +106,12 @@ void meTestThatWeCanSavePassword(){
 
 @Test
     void testThatUsersCanSavePasswords() throws LoginException {
-        loginRequest = LoginRequest.builder()
-                .accessCode("asdf")
-                .email("rich@gmail.com")
-                .build();
+
         loginResponse = userServices.login(loginRequest);
         assertEquals("Login successful", loginResponse.getMessage());
 
-        savePasswordRequest = SavePasswordRequest.builder()
-                .accountName("FaceBook")
-                .passwordValue("myFB123")
-                .build();
-        savePasswordResponse = userServices.savePassword(savePasswordRequest);
-        assertEquals("Password saved successfully", savePasswordResponse.getMessage());
+        userServices.savePassword(password);
+        assertEquals("Facebook", password.getAccountName());
 
 
 }

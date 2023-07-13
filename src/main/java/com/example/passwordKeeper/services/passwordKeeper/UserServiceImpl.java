@@ -1,14 +1,12 @@
 package com.example.passwordKeeper.services.passwordKeeper;
+
 import com.example.passwordKeeper.dto.request.LoginRequest;
 import com.example.passwordKeeper.dto.request.RegistrationRequest;
-import com.example.passwordKeeper.dto.request.SavePasswordRequest;
 import com.example.passwordKeeper.dto.response.LoginResponse;
 import com.example.passwordKeeper.dto.response.RegistrationResponse;
-import com.example.passwordKeeper.dto.response.SavePasswordResponse;
 import com.example.passwordKeeper.exceptions.RegistrationException;
 import com.example.passwordKeeper.models.Passwords;
 import com.example.passwordKeeper.models.User;
-import com.example.passwordKeeper.repositories.PasswordRepository;
 import com.example.passwordKeeper.repositories.UserRepository;
 import com.example.passwordKeeper.services.PasswordServices;
 import com.example.passwordKeeper.services.UserServices;
@@ -78,23 +76,13 @@ public class UserServiceImpl implements UserServices {
         return loginResponse;
     }
 
-    @Override
-    public SavePasswordResponse savePassword(SavePasswordRequest savePasswordRequest) {
-            SavePasswordResponse savePasswordResponse = new SavePasswordResponse();
-            Passwords password = new Passwords();
-            modelMapper.map(password,savePasswordRequest);
-
-        System.out.println("this is password ()-->  "+password.getPasswordValue());
-        System.out.println("this is password  value ()-->  "+savePasswordRequest.getPasswordValue());
-            passwordServices.savePassword(password);
-            savePasswordResponse.setMessage("Password saved successfully");
-            return savePasswordResponse;
-        }
 
     @Override
-    public void createAndSavedPassword(Passwords password) {
+    public void savePassword(Passwords password) {
         password.setPasswordUser(userRepository.findByEmail(password.getUserEmail()));
         password.setTimeCreated(LocalDateTime.now());
+        password.setPasswordToSave(password.getPasswordToSave());
+        password.setAccountName(password.getAccountName());
         passwordServices.savePassword(password);
 
     }
